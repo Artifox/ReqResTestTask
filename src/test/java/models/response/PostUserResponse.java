@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class CreateUserResponse {
+public class PostUserResponse {
 
     //@SerializedName("name")
     String userName;
