@@ -1,14 +1,15 @@
-package models.response.single_user;
+package models.response.get_single_user;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@lombok.Data
+@Data
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class SingleUserResponse {
-    public Data data;
-    public Support support;
+public class Support {
+    public String url;
+    public String text;
 }
