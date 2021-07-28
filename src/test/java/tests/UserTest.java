@@ -1,7 +1,5 @@
 package tests;
 
-import com.github.javafaker.Faker;
-import com.google.gson.Gson;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import methods.user.DeleteUserMethod;
@@ -13,23 +11,18 @@ import methods.verification.VerifyGetUserMethod;
 import methods.verification.VerifyPostUserMethod;
 import methods.verification.VerifyPutUserMethod;
 import models.request.User;
-import models.response.CreateUserResponse;
+import models.response.PostUserResponse;
 import org.testng.annotations.Test;
+import utils.UserFactory;
 
 import static org.testng.Assert.assertEquals;
 
-public class UserTest {
+public class UserTest extends BaseTest{
     public static final String URL = "https://reqres.in/api/users";
-    Faker faker = new Faker();
-    Gson gson = new Gson();
 
     @Test
     public void postUserTest() {
-        User user = User.builder()
-                .userName(faker.funnyName().name())
-                .jobTitle(faker.job().title())
-                .build();
-
+        User user = UserFactory.getUser();
         PostUserMethod postUserMethod = new PostUserMethod(URL, user);
         Response response = postUserMethod.getResponse();
         new VerifyPostUserMethod(user, response).verifyResponse();
@@ -37,56 +30,37 @@ public class UserTest {
 
     @Test
     public void getUserTest() {
-        User user = User.builder()
-                .userName(faker.funnyName().name())
-                .jobTitle(faker.job().title())
-                .build();
-        Response response = new PostUserMethod(URL, user).getResponse();
-        CreateUserResponse userResponse = gson.fromJson(response.asString(), CreateUserResponse.class);
+        User user = UserFactory.getUser();
+        PostUserResponse userResponse = getPostUserResponse(URL, user);
         String userId = userResponse.getId();
-        response = new GetUserMethod(URL, userId, 200).getResponse();
+        Response response = new GetUserMethod(URL, userId, 200).getResponse();
         new VerifyGetUserMethod(user, response).verifyResponse();
     }
 
     @Test
     public void putUserTest() {
-        User user = User.builder()
-                .userName(faker.funnyName().name())
-                .jobTitle(faker.job().title())
-                .build();
-        Response response = new PostUserMethod(URL, user).getResponse();
-        CreateUserResponse userResponse = gson.fromJson(response.asString(), CreateUserResponse.class);
+        User user = UserFactory.getUser();
+        PostUserResponse userResponse = getPostUserResponse(URL, user);
         String userId = userResponse.getId();
-        user = User.builder()
-                .userName(faker.funnyName().name())
-                .jobTitle(faker.job().title())
-                .build();
-        response = new PutUserMethod(URL, userId, user).getResponse();
+        user = UserFactory.getUser();
+        Response response = new PutUserMethod(URL, userId, user).getResponse();
         new VerifyPutUserMethod(user, response).verifyResponse();
     }
 
     @Test
     public void deleteUserTest() {
-        User user = User.builder()
-                .userName(faker.funnyName().name())
-                .jobTitle(faker.job().title())
-                .build();
-        Response response = new PostUserMethod(URL, user).getResponse();
-        CreateUserResponse userResponse = gson.fromJson(response.asString(), CreateUserResponse.class);
+        User user = UserFactory.getUser();
+        PostUserResponse userResponse = getPostUserResponse(URL, user);
         String userId = userResponse.getId();
-        response = new DeleteUserMethod(URL, userId).getResponse();
+        Response response = new DeleteUserMethod(URL, userId).getResponse();
         new VerifyDeleteUserMethod(response).verifyResponse();
     }
 
     @Test
     public void e2eUserTest() {
-
-        User user = User.builder()
-                .userName(faker.funnyName().name())
-                .jobTitle(faker.job().title())
-                .build();
+        User user = UserFactory.getUser();
         Response response = new PostUserMethod(URL, user).getResponse();
-        String userId = response.as(CreateUserResponse.class).getId();
+        String userId = response.as(PostUserResponse.class).getId();
         new PutUserMethod(URL, userId, user).getResponse();
         response = new DeleteUserMethod(URL, userId).getResponse();
         new VerifyDeleteUserMethod(response).verifyResponse();
