@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PostUserResponse {
 
-    //@SerializedName("name")
+    @SerializedName("name")
     String userName;
-    //@SerializedName("job")
+    @SerializedName("job")
     String jobTitle;
     String id;
-    //@SerializedName("createdAt")
+    @SerializedName("createdAt")
     String createdAt;
 }
