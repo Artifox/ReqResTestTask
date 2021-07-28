@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 @NoArgsConstructor
-public class UserResponse {
+public class CreateUserResponse {
 
-    @SerializedName("name")
+    //@SerializedName("name")
     String userName;
-    @SerializedName("job")
-    String jobName;
+    //@SerializedName("job")
+    String jobTitle;
     String id;
-    @SerializedName("createdAt")
+    //@SerializedName("createdAt")
     String createdAt;
 }

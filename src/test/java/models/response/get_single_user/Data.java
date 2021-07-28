@@ -1,4 +1,4 @@
-package models.response.single_user;
+package models.response.get_single_user;
 
 import com.google.gson.annotations.SerializedName;
 import lombok.AllArgsConstructor;
